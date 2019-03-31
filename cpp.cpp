@@ -1,71 +1,145 @@
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 using namespace std;
 
-class Person
+static const int MAX = 100000;
+
+class mystack
 {
-  private:
-    string name;
-    int age;
+private:
+    int a[MAX];
+    int top = 0;
+public:
+    mystack();
+    ~mystack();
 
-  public:
-    Person(string s="Penguin", int n=11) : name(s), age(n) {
-        // name = s;
-        // age = n;
-    };
-    ~Person();
+    void initialize();
 
-    void setName(string s);
-    void setAge(int n);
-    void disp();
+    bool isEmpty();
+    bool isFull();
+
+    void push(int);
+    int pop();
 };
 
-// Person::Person(/* args */)
-// {
-// }
-
-Person::~Person()
+mystack::mystack()
 {
 }
 
-void Person::setName(string s)
+mystack::~mystack()
 {
-    name = s;
 }
 
-void Person::setAge(int n)
-{
-    if (n < 0)
-    {
-        age = 0;
+void mystack::initialize() {
+    top = 0;
+}
+
+bool mystack::isEmpty() {
+    return top == 0;
+}
+
+bool mystack::isFull() {
+    return top >= MAX - 1;
+}
+
+void mystack::push(int val) {
+    if (isFull()) {
+        throw "Overflow";
+    } else {
+        top++;
+        a[top] = val;
     }
-    else
-    {
-        age = n;
+}
+
+int mystack::pop() {
+    if (isEmpty()) {
+        throw "Underflow";
+    } else {
+        top--;
+        return a[top + 1];
     }
 }
 
-void Person::disp()
+class myqueue
 {
-    cout << "Name = " << name << ", Age = " << age << endl;
+    private:
+    int a[MAX];
+    int head, tail;
+
+    public:
+    myqueue();
+    ~myqueue();
+
+    void initialize();
+
+    bool isEmpty();
+    bool isFull();
+
+    void enqueue(int);
+    int dequeue();
+};
+
+myqueue::myqueue()
+{
 }
+
+myqueue::~myqueue()
+{
+}
+
+void myqueue::initialize() {
+    head = tail = 0;
+}
+
+bool myqueue::isEmpty() {
+    return head == tail;
+}
+
+bool myqueue::isFull() {
+    return head == (tail + 1) % MAX;
+}
+
+void myqueue::enqueue(int val) {
+    if (isFull()) {
+        throw "Overflow";
+    } else {
+        a[tail] = val;
+        tail = (tail + 1) % MAX;
+    }
+}
+
+int myqueue::dequeue() {
+    if (isEmpty()) {
+        throw "Underflow";
+    } else {
+        head = (head + 1) % MAX;
+        return a[head - 1];
+    }
+}
+
 
 int main(int argc, char const *argv[])
 {
-    Person p;
-    // dt.setName("Ichiro Yamada");
-    // dt.setAge(-50);
-    p.disp();
+    mystack st;
+    myqueue qe;
 
-    Person p2(p);
-    p2.disp();
+    // st.push(1);
+    // st.push(2);
+    qe.initialize();
+    qe.enqueue(1);
+    qe.enqueue(2);
+    qe.enqueue(3);
+    qe.enqueue(4);
 
-    // Person d, *p = &d;
-
-    // d.age = 40;
-    // d.disp();
-    // p->age = 50;
-    // d.disp();
-
+    try{
+        cout << qe.dequeue() << endl;
+        cout << qe.dequeue() << endl;
+        cout << qe.dequeue() << endl;
+        cout << qe.dequeue() << endl;
+        cout << qe.dequeue() << endl;
+    }
+    catch (...)
+    {
+        cout << "Exception" << endl;;
+    }
     return 0;
 }
